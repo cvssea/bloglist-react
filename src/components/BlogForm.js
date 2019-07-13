@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const BlogForm = () => {
+const BlogForm = ({ renderBlogs, setMessage }) => {
   const emptyBlog = {
     title: '',
     author: '',
@@ -17,10 +17,15 @@ const BlogForm = () => {
   };
 
   const handleSubmit = (e) => {
-    console.log(e);
     e.preventDefault();
     blogService.create(blog);
+    setMessage({
+      success: true,
+      text: `A new blog: ${blog.title} added`,
+    });
+    setTimeout(() => setMessage(null), 5000);
     setBlog(emptyBlog);
+    renderBlogs();
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
-import BlogForm from './components/BlogForm';
 import Blogs from './components/Blogs';
 import blogService from './services/blogs';
 import auth from './services/auth';
@@ -12,6 +12,7 @@ const App = () => {
   };
   const [credentials, setCredentials] = useState(emptyCredentials);
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     const jsonUser = window.localStorage.getItem('bloglistUser');
@@ -31,7 +32,12 @@ const App = () => {
       setUser(userData);
     } catch (e) {
       console.log('LoginError:', e);
+      setMessage({
+        success: false,
+        text: e,
+      });
     }
+    setTimeout(() => setMessage(null), 5000);
     setCredentials(emptyCredentials);
   };
 
@@ -46,7 +52,8 @@ const App = () => {
     <>
       { user
         ? (
-          <Blogs>
+          <Blogs setMessage={setMessage}>
+            {message && <Notification message={message} />}
             <p>
               {user.name}
               {' '}
@@ -59,15 +66,17 @@ const App = () => {
                 logout
               </button>
             </p>
-            <BlogForm />
           </Blogs>
         )
         : (
-          <LoginForm
-            handleSubmit={handleLogin}
-            handleChange={handleChange}
-            credentials={credentials}
-          />
+          <>
+            {message && <Notification message={message} />}
+            <LoginForm
+              handleSubmit={handleLogin}
+              handleChange={handleChange}
+              credentials={credentials}
+            />
+          </>
         )
       }
     </>
