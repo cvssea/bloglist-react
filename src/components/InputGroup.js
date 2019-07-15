@@ -7,6 +7,7 @@ const InputGroup = ({
   name,
   value,
   onChange,
+  required,
 }) => (
   <div className="form-group">
     <label htmlFor={name}>{label}</label>
@@ -17,6 +18,7 @@ const InputGroup = ({
       name={name}
       value={value}
       onChange={onChange}
+      required={required}
     />
   </div>
 );
@@ -24,6 +26,7 @@ const InputGroup = ({
 InputGroup.defaultProps = {
   type: 'text',
   label: '',
+  required: false,
 };
 
 InputGroup.propTypes = {
@@ -32,6 +35,7 @@ InputGroup.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool,
 };
 
 export default InputGroup;

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
+import InputGroup from './InputGroup';
 
-const BlogForm = ({ renderBlogs, setMessage }) => {
+const BlogForm = ({ renderBlogs, setMessage, setVisibility }) => {
   const emptyBlog = {
     title: '',
     author: '',
@@ -21,53 +22,54 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
     blogService.create(blog);
     setMessage({
       success: true,
-      text: `A new blog: ${blog.title} added`,
+      text: `'${blog.title}' added`,
     });
     setTimeout(() => setMessage(null), 5000);
     setBlog(emptyBlog);
     renderBlogs();
+    setVisibility(false);
   };
 
   return (
     <div>
-      <h3>Add new Blog</h3>
+      <h4 className="display-4 text-center">Add new Blog</h4>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          Title:
-          <input
-            className="form-control"
-            type="text"
-            name="title"
-            value={blog.title}
-            onChange={handleChange}
-          />
+        <InputGroup
+          label="Title"
+          name="title"
+          value={blog.title}
+          onChange={handleChange}
+          required
+        />
+        <InputGroup
+          label="Author"
+          name="author"
+          value={blog.author}
+          onChange={handleChange}
+          required
+        />
+        <InputGroup
+          label="url"
+          name="url"
+          value={blog.url}
+          onChange={handleChange}
+          required
+        />
+        <div>
+          <button
+            className="btn btn-outline-success mr-2"
+            type="submit"
+          >
+            Create
+          </button>
+          <button
+            className="btn btn-outline-danger btn-sm"
+            type="button"
+            onClick={() => setVisibility(false)}
+          >
+            Cancel
+          </button>
         </div>
-        <div className="form-group">
-          Author:
-          <input
-            className="form-control"
-            type="text"
-            name="author"
-            value={blog.author}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          url:
-          <input
-            className="form-control"
-            type="text"
-            name="url"
-            value={blog.url}
-            onChange={handleChange}
-          />
-        </div>
-        <button
-          className="btn btn-primary"
-          type="submit"
-        >
-          Create
-        </button>
       </form>
     </div>
   );

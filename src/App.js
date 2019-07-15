@@ -37,8 +37,8 @@ const App = () => {
         success: false,
         text: e,
       });
+      setTimeout(() => setMessage(null), 5000);
     }
-    setTimeout(() => setMessage(null), 5000);
     setCredentials(emptyCredentials);
   };
 
@@ -51,38 +51,23 @@ const App = () => {
 
   return (
     <>
-      <Header />
-      <div className="container">
+      <Header
+        user={user ? user.name : null}
+        onClick={auth.logout(setUser)}
+      />
+      {message && <Notification message={message} />}
+      <main className="container">
         { user
-          ? (
-            <Blogs setMessage={setMessage}>
-              {message && <Notification message={message} />}
-              <p>
-                {user.name}
-                {' '}
-                logged in
-                {' '}
-                <button
-                  type="button"
-                  onClick={auth.logout(setUser)}
-                >
-                  logout
-                </button>
-              </p>
-            </Blogs>
-          )
+          ? <Blogs setMessage={setMessage} />
           : (
-            <>
-              {message && <Notification message={message} />}
-              <LoginForm
-                handleSubmit={handleLogin}
-                handleChange={handleChange}
-                credentials={credentials}
-              />
-            </>
+            <LoginForm
+              handleSubmit={handleLogin}
+              handleChange={handleChange}
+              credentials={credentials}
+            />
           )
         }
-      </div>
+      </main>
     </>
   );
 };

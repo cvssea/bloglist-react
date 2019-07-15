@@ -7,31 +7,19 @@ const Blog = ({
   likes,
   user: { username },
 }) => (
-  <div className="container">
+  <article className="container">
     <div className="row border rounded my-4 p-2">
       <div className="col-md-9">
         <h4>{title}</h4>
         <p>{url}</p>
-        <p>
-          user:
-          {' '}
-          {username}
-        </p>
+        <p>user: {username}</p>
       </div>
-      <div className="col-md-3">
-        <p>
-          Likes:
-          {' '}
-          {likes}
-        </p>
-        <p>
-          By:
-          {' '}
-          {author}
-        </p>
+      <div className="col-md-3 border-left">
+        <p className="text-center">Likes: {likes}</p>
+        <p className="text-center">by: {author}</p>
       </div>
     </div>
-  </div>
+  </article>
 );
 
 export default Blog;

@@ -1,9 +1,11 @@
 import React from 'react';
 
 const Notification = ({ message }) => (
-  <div className={`Notification ${message.success ? 'success' : 'error'}`}>
-    {message.text}
-  </div>
+  <section className="container mt-4">
+    <div className={`alert alert-${message.success ? 'success' : 'danger'}`}>
+      {message.text}
+    </div>
+  </section>
 );
 
 export default Notification;
