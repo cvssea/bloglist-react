@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Blogs from './components/Blogs';
@@ -50,35 +51,38 @@ const App = () => {
 
   return (
     <>
-      { user
-        ? (
-          <Blogs setMessage={setMessage}>
-            {message && <Notification message={message} />}
-            <p>
-              {user.name}
-              {' '}
-              logged in
-              {' '}
-              <button
-                type="button"
-                onClick={auth.logout(setUser)}
-              >
-                logout
-              </button>
-            </p>
-          </Blogs>
-        )
-        : (
-          <>
-            {message && <Notification message={message} />}
-            <LoginForm
-              handleSubmit={handleLogin}
-              handleChange={handleChange}
-              credentials={credentials}
-            />
-          </>
-        )
-      }
+      <Header />
+      <div className="container">
+        { user
+          ? (
+            <Blogs setMessage={setMessage}>
+              {message && <Notification message={message} />}
+              <p>
+                {user.name}
+                {' '}
+                logged in
+                {' '}
+                <button
+                  type="button"
+                  onClick={auth.logout(setUser)}
+                >
+                  logout
+                </button>
+              </p>
+            </Blogs>
+          )
+          : (
+            <>
+              {message && <Notification message={message} />}
+              <LoginForm
+                handleSubmit={handleLogin}
+                handleChange={handleChange}
+                credentials={credentials}
+              />
+            </>
+          )
+        }
+      </div>
     </>
   );
 };

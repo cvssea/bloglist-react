@@ -32,40 +32,42 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
     <div>
       <h3>Add new Blog</h3>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">
-            Title:
-            <input
-              type="text"
-              name="title"
-              value={blog.title}
-              onChange={handleChange}
-            />
-          </label>
+        <div className="form-group">
+          Title:
+          <input
+            className="form-control"
+            type="text"
+            name="title"
+            value={blog.title}
+            onChange={handleChange}
+          />
         </div>
-        <div>
-          <label htmlFor="author">
-            Author:
-            <input
-              type="text"
-              name="author"
-              value={blog.author}
-              onChange={handleChange}
-            />
-          </label>
+        <div className="form-group">
+          Author:
+          <input
+            className="form-control"
+            type="text"
+            name="author"
+            value={blog.author}
+            onChange={handleChange}
+          />
         </div>
-        <div>
-          <label htmlFor="url">
-            url:
-            <input
-              type="text"
-              name="url"
-              value={blog.url}
-              onChange={handleChange}
-            />
-          </label>
+        <div className="form-group">
+          url:
+          <input
+            className="form-control"
+            type="text"
+            name="url"
+            value={blog.url}
+            onChange={handleChange}
+          />
         </div>
-        <button type="submit">create</button>
+        <button
+          className="btn btn-primary"
+          type="submit"
+        >
+          Create
+        </button>
       </form>
     </div>
   );
