@@ -29,4 +29,38 @@ const create = async (blog) => {
   }
 };
 
-export default { setToken, getAll, create };
+const like = async (likes, id) => {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ likes }),
+    });
+    if (!response.ok) throw new Error(`update error: ${response.status}`);
+  } catch (e) {
+    console.log('update error', e);
+  }
+};
+
+const remove = async (id) => {
+  try {
+    await fetch(`${baseUrl}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    });
+  } catch (e) {
+    console.log('delete error', e);
+  }
+};
+
+export default {
+  setToken,
+  getAll,
+  create,
+  like,
+  remove,
+};

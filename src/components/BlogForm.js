@@ -49,6 +49,7 @@ const BlogForm = ({ renderBlogs, setMessage, setVisibility }) => {
           required
         />
         <InputGroup
+          type="url"
           label="url"
           name="url"
           value={blog.url}

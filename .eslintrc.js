@@ -26,5 +26,6 @@ module.exports = {
     "react/prop-types": 0,
     "jsx-a11y/label-has-for": 0,
     "react/jsx-one-expression-per-line": 0,
+    "no-alert": 0,
   },
 };

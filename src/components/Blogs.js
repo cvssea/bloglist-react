@@ -42,9 +42,11 @@ const Blogs = ({ setMessage }) => {
           </button>
         )}
       {
-        blogs.map(b => (
-          <Blog key={b.id} {...b} />
-        ))
+        blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map(b => (
+            <Blog key={b.id} {...b} renderBlogs={renderBlogs} />
+          ))
       }
     </div>
   );
