@@ -27,5 +27,6 @@ module.exports = {
     "jsx-a11y/label-has-for": 0,
     "react/jsx-one-expression-per-line": 0,
     "no-alert": 0,
+    "react/button-has-type": 0,
   },
 };

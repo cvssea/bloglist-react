@@ -56,21 +56,12 @@ const BlogForm = ({ renderBlogs, setMessage, setVisibility }) => {
           onChange={handleChange}
           required
         />
-        <div>
-          <button
-            className="btn btn-outline-success mr-2"
-            type="submit"
-          >
-            Create
-          </button>
-          <button
-            className="btn btn-outline-danger btn-sm"
-            type="button"
-            onClick={() => setVisibility(false)}
-          >
-            Cancel
-          </button>
-        </div>
+        <button
+          className="btn btn-outline-success mr-2"
+          type="submit"
+        >
+          Create
+        </button>
       </form>
     </div>
   );
