@@ -2,7 +2,6 @@ const baseUrl = '/api/login/';
 
 const login = async (credentials) => {
   try {
-    console.log('logging in...');
     const response = await fetch(baseUrl, {
       method: 'POST',
       headers: {

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useImperativeHandle } from 'react';
 
-const Toggle = ({ btnLabel, children }) => {
+const Toggle = React.forwardRef(({ btnLabel, children }, ref) => {
   const [visible, setVisible] = useState(false);
   const toggleVisibility = () => setVisible(!visible);
+
+  useImperativeHandle(ref, () => ({ toggleVisibility }));
 
   return (
     <div>
@@ -29,7 +31,7 @@ const Toggle = ({ btnLabel, children }) => {
         }
     </div>
   );
-};
+});
 
 Toggle.defaultProps = {
   btnLabel: 'Show',

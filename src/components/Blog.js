@@ -10,7 +10,7 @@ const Blog = ({
   user: { username },
   renderBlogs,
 }) => {
-  const [showInfo, setShowInfo] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
   const [numLikes, setNumLikes] = useState(likes);
 
   const updateLikes = async () => {

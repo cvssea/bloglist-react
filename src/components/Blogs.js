@@ -8,6 +8,8 @@ const Blogs = ({ setMessage }) => {
   const [blogs, setBlogs] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
+  const blogFormRef = React.createRef();
+
   useEffect(() => {
     const getBlogs = async () => {
       const data = await blogService.getAll();
@@ -17,14 +19,17 @@ const Blogs = ({ setMessage }) => {
     getBlogs();
   }, [submitted]);
 
-  const renderBlogs = () => {
+  const renderBlogs = (toggle = false) => {
     setSubmitted(true);
+    if (toggle) {
+      blogFormRef.current.toggleVisibility();
+    }
   };
 
   return (
     <div className="container">
       <h2 className="display-2">Blogs</h2>
-      <Toggle>
+      <Toggle btnLabel="Add Blog" ref={blogFormRef}>
         <BlogForm
           setMessage={setMessage}
           renderBlogs={renderBlogs}

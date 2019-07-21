@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import blogService from '../services/blogs';
 import InputGroup from './InputGroup';
 
-const BlogForm = ({ renderBlogs, setMessage, setVisibility }) => {
+const BlogForm = ({ renderBlogs, setMessage }) => {
   const emptyBlog = {
     title: '',
     author: '',
@@ -26,8 +26,7 @@ const BlogForm = ({ renderBlogs, setMessage, setVisibility }) => {
     });
     setTimeout(() => setMessage(null), 5000);
     setBlog(emptyBlog);
-    renderBlogs();
-    setVisibility(false);
+    renderBlogs(true);
   };
 
   return (
