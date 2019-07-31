@@ -57,7 +57,7 @@ const App = () => {
       />
       {message && <Notification message={message} />}
       <main className="container">
-        { user
+        {user
           ? <Blogs setMessage={setMessage} />
           : (
             <LoginForm

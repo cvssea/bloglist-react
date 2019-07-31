@@ -1,9 +1,6 @@
 import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Blog from './Blog';
-
-afterEach(cleanup);
 
 describe('<Blog />', () => {
   const blog = {
