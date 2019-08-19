@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import blogService from '../../services/blogs';
 
 const Blog = ({
-  id,
-  title,
-  author,
-  url,
-  likes,
-  user: { username },
-  renderBlogs,
+  id, title, author, url, likes, user: { username }, renderBlogs,
 }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [numLikes, setNumLikes] = useState(likes);
+
+  
 
   const updateLikes = async () => {
     await blogService.like(numLikes + 1, id);
@@ -19,8 +15,9 @@ const Blog = ({
   };
 
   let canDelete = false;
-  if (localStorage.bloglistUser) {
+  if (window.localStorage.bloglistUser) {
     const loggedUser = JSON.parse(localStorage.bloglistUser).username;
+    console.log('loggedUser', loggedUser)
     canDelete = loggedUser === username;
   }
 
@@ -37,38 +34,27 @@ const Blog = ({
       <div className="row border rounded my-4 p-2">
         <div className="col-md-9">
           <h4>{title}</h4>
-          {showInfo
-            && (
-              <>
-                <p>{url}</p>
-                <p>user: {username}</p>
-              </>
-            )}
+          {showInfo && (
+            <>
+              <p>{url}</p>
+              <p>user: {username}</p>
+            </>
+          )}
         </div>
-        {showInfo
-          && (
-            <div className="col-md-3 border-left d-flex flex-column align-items-center info-visible">
-              <p className="text-center mb-0">{numLikes} likes</p>
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-success"
-                onClick={updateLikes}
-              >
-                Like
-              </button>
-              <p className="text-center pt-2">by: {author}</p>
-            </div>
-          )}
-        {(showInfo && canDelete)
-          && (
-            <button
-              type="button"
-              className="btn btn-sm btn-outline-danger"
-              onClick={deleteBlog}
-            >
-              Delete
+        {showInfo && (
+          <div className="col-md-3 border-left d-flex flex-column align-items-center info-visible">
+            <p className="text-center mb-0">{numLikes} likes</p>
+            <button type="button" className="btn btn-sm btn-outline-success" onClick={updateLikes}>
+              Like
             </button>
-          )}
+            <p className="text-center pt-2">by: {author}</p>
+          </div>
+        )}
+        {showInfo && canDelete && (
+          <button type="button" className="btn btn-sm btn-outline-danger" onClick={deleteBlog}>
+            Delete
+          </button>
+        )}
         <button
           type="button"
           className="btn btn-primary ml-auto"

@@ -1,49 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import Blog from './Blog';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+
+import Blog from './Blog/Blog';
 import Toggle from './Toggle';
 import BlogForm from './BlogForm';
-import blogService from '../services/blogs';
+// import blogService from '../services/blogs';
 
-const Blogs = ({ setMessage }) => {
-  const [blogs, setBlogs] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
+import { initBlogs } from '../reducers/blogsReducer';
 
+const Blogs = ({ blogs, setMessage, getBlogs }) => {
   const blogFormRef = React.createRef();
 
   useEffect(() => {
-    const getBlogs = async () => {
-      const data = await blogService.getAll();
-      setBlogs(data);
-      setSubmitted(false);
-    };
     getBlogs();
-  }, [submitted]);
+  }, [getBlogs]);
 
-  const renderBlogs = (toggle = false) => {
-    setSubmitted(true);
-    if (toggle) {
-      blogFormRef.current.toggleVisibility();
-    }
-  };
+  // const renderBlogs = (toggle = false) => {
+  //   setSubmitted(true);
+  //   if (toggle) {
+  //     blogFormRef.current.toggleVisibility();
+  //   }
+  // };
+
+  console.log(blogs);
 
   return (
     <div className="container">
       <h2 className="display-2">Blogs</h2>
       <Toggle btnLabel="Add Blog" ref={blogFormRef}>
-        <BlogForm
-          setMessage={setMessage}
-          renderBlogs={renderBlogs}
-        />
+        <BlogForm setMessage={setMessage} />
       </Toggle>
-      {
-        blogs
-          .sort((a, b) => b.likes - a.likes)
-          .map(b => (
-            <Blog key={b.id} {...b} renderBlogs={renderBlogs} />
-          ))
-      }
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map(b => (
+          <Blog key={b.id} {...b} />
+        ))}
     </div>
   );
 };
 
-export default Blogs;
+const mapStateToProps = ({ blogs }) => ({
+  blogs,
+});
+
+export default connect(
+  mapStateToProps,
+  { getBlogs: initBlogs },
+)(Blogs);

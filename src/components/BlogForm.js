@@ -26,7 +26,7 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
     });
     setTimeout(() => setMessage(null), 5000);
     setBlog(emptyBlog);
-    renderBlogs(true);
+    // renderBlogs(true);
   };
 
   return (
