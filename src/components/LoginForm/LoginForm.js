@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { loginUser } from '../reducers/authReducer';
-
-import InputGroup from './InputGroup';
+import PropTypes from 'prop-types';
+import InputGroup from '../InputGroup';
 
 const LoginForm = ({ login }) => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: '',
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,9 +46,8 @@ const LoginForm = ({ login }) => {
   );
 };
 
-// LoginForm.propTypes = {};
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+};
 
-export default connect(
-  null,
-  { login: loginUser },
-)(LoginForm);
+export default LoginForm;

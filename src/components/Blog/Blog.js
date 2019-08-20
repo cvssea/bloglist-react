@@ -7,8 +7,6 @@ const Blog = ({
   const [showInfo, setShowInfo] = useState(false);
   const [numLikes, setNumLikes] = useState(likes);
 
-  
-
   const updateLikes = async () => {
     await blogService.like(numLikes + 1, id);
     setNumLikes(numLikes + 1);
@@ -17,7 +15,6 @@ const Blog = ({
   let canDelete = false;
   if (window.localStorage.bloglistUser) {
     const loggedUser = JSON.parse(localStorage.bloglistUser).username;
-    console.log('loggedUser', loggedUser)
     canDelete = loggedUser === username;
   }
 

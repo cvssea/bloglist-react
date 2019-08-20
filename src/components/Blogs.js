@@ -22,8 +22,6 @@ const Blogs = ({ blogs, setMessage, getBlogs }) => {
   //   }
   // };
 
-  console.log(blogs);
-
   return (
     <div className="container">
       <h2 className="display-2">Blogs</h2>
