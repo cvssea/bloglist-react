@@ -2,12 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const InputGroup = ({
-  label,
-  type,
-  name,
-  value,
-  onChange,
-  required,
+  label, type, name, value, onChange, required,
 }) => (
   <div className="form-group">
     <label htmlFor={name}>{label}</label>

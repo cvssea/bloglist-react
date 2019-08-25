@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { validate, logout } from './reducers/authReducer';
-// import blogService from './services/blogs';
-// import auth from './services/auth';
+import { validate, logout } from './reducers/auth';
+import blogService from './services/blogs';
 
 import Header from './components/Header';
 import Notification from './components/Notification';
+import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Blogs from './components/Blogs';
 
@@ -13,14 +13,24 @@ const App = ({ user, logout, validate }) => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    validate(window.localStorage.getItem('bloglistUser'));
+    const token = validate(window.localStorage.getItem('bloglistUser'));
+    if (token) blogService.setToken(token);
   }, [validate]);
 
   return (
     <>
       <Header user={user ? user.name : null} onClick={logout} />
       {message && <Notification message={message} />}
-      <main className="container">{user ? <Blogs setMessage={setMessage} /> : <LoginForm />}</main>
+      <main className="container">
+        {user ? (
+          <>
+            <BlogForm />
+            <Blogs setMessage={setMessage} />
+          </>
+        ) : (
+          <LoginForm />
+        )}
+      </main>
     </>
   );
 };

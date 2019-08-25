@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import { connect } from 'react-redux';
+import { createBlog } from '../reducers/blogs';
+// import blogService from '../services/blogs';
+
 import InputGroup from './InputGroup';
 
-const BlogForm = ({ renderBlogs, setMessage }) => {
-  const emptyBlog = {
+const BlogForm = (props) => {
+  const nullBlog = {
     title: '',
     author: '',
     url: '',
   };
-  const [blog, setBlog] = useState(emptyBlog);
+  const [blog, setBlog] = useState(nullBlog);
 
   const handleChange = ({ target: { name, value } }) => {
     setBlog({
@@ -19,14 +22,8 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    blogService.create(blog);
-    setMessage({
-      success: true,
-      text: `'${blog.title}' added`,
-    });
-    setTimeout(() => setMessage(null), 5000);
-    setBlog(emptyBlog);
-    // renderBlogs(true);
+    props.createBlog(blog);
+    setBlog(nullBlog);
   };
 
   return (
@@ -55,10 +52,7 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
           onChange={handleChange}
           required
         />
-        <button
-          className="btn btn-outline-success mr-2"
-          type="submit"
-        >
+        <button className="btn btn-outline-success mr-2" type="submit">
           Create
         </button>
       </form>
@@ -66,4 +60,14 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
   );
 };
 
-export default BlogForm;
+export default connect(
+  null,
+  { createBlog },
+)(BlogForm);
+
+// blogService.create(blog);
+// setMessage({
+//   success: true,
+//   text: `'${blog.title}' added`,
+// });
+// setTimeout(() => setMessage(null), 5000);

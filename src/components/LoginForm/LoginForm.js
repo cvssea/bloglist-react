@@ -8,8 +8,7 @@ const LoginForm = ({ login }) => {
     password: '',
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = ({ target: { name, value } }) => {
     setCredentials({
       ...credentials,
       [name]: value,

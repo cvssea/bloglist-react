@@ -33,14 +33,16 @@ export const validate = userInLocalStorage => (dispatch) => {
   console.log('validating');
   if (userInLocalStorage) {
     console.log('found user in storage');
+
+    const user = JSON.parse(userInLocalStorage);
     dispatch({
       type: 'VALIDATE',
-      payload: JSON.parse(userInLocalStorage),
+      payload: user,
     });
-  } else {
-    console.log('no user in storage');
-    return null;
+    return user.token;
   }
+  console.log('no user in storage');
+  return null;
 };
 
 export default authReducer;

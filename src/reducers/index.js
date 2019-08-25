@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import blogs from './blogsReducer';
-import auth from './authReducer';
+import blogs from './blogs';
+import auth from './auth';
 
 export default combineReducers({ blogs, auth });
