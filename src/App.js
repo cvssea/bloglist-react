@@ -1,75 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { validate } from './reducers/auth';
+import blogService from './services/blogs';
+
 import Header from './components/Header';
 import Notification from './components/Notification';
+import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
+import Blog from './components/Blog';
 import Blogs from './components/Blogs';
-import blogService from './services/blogs';
-import auth from './services/auth';
+import Users from './components/Users';
+import User from './components/User';
 
-const App = () => {
-  const emptyCredentials = {
-    username: '',
-    password: '',
-  };
-  const [credentials, setCredentials] = useState(emptyCredentials);
-  const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
-
+const App = ({
+  user, validateUser, message,
+}) => {
   useEffect(() => {
-    const jsonUser = window.localStorage.getItem('bloglistUser');
-    if (jsonUser) {
-      const loggedUser = JSON.parse(jsonUser);
-      setUser(loggedUser);
-      blogService.setToken(loggedUser.token);
-    }
-  }, []);
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const userData = await auth.login(credentials);
-      window.localStorage.setItem('bloglistUser', JSON.stringify(userData));
-      blogService.setToken(userData.token);
-      setUser(userData);
-    } catch (e) {
-      console.log('LoginError:', e);
-      setMessage({
-        success: false,
-        text: e,
-      });
-      setTimeout(() => setMessage(null), 5000);
-    }
-    setCredentials(emptyCredentials);
-  };
-
-  const handleChange = ({ target: { name, value } }) => {
-    setCredentials({
-      ...credentials,
-      [name]: value,
-    });
-  };
+    const token = validateUser(window.localStorage.getItem('bloglistUser'));
+    if (token) blogService.setToken(token);
+  }, [validateUser]);
 
   return (
-    <>
-      <Header
-        user={user ? user.name : null}
-        onClick={auth.logout(setUser)}
-      />
+    <Router>
+      <Header user={user ? user.name : null} />
       {message && <Notification message={message} />}
       <main className="container">
-        {user
-          ? <Blogs setMessage={setMessage} />
-          : (
-            <LoginForm
-              handleSubmit={handleLogin}
-              handleChange={handleChange}
-              credentials={credentials}
-            />
-          )
-        }
+        {user ? (
+          <>
+            <Route exact path="/" component={Blogs} />
+            <Route path="/blogs/:id" component={Blog} />
+            <Route path="/add" component={BlogForm} />
+            <Route exact path="/users" component={Users} />
+            <Route path="/users/:id" component={User} />
+          </>
+        ) : (
+          <LoginForm />
+        )}
       </main>
-    </>
+    </Router>
   );
 };
 
-export default App;
+export default connect(
+  state => ({
+    user: state.auth,
+    message: state.message,
+  }),
+  { validateUser: validate },
+)(App);

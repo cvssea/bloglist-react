@@ -12,15 +12,17 @@ const login = async (credentials) => {
 
     const data = await response.json();
     if (data.error) throw data.error;
+
+    console.log('setting storage');
+    window.localStorage.setItem('bloglistUser', JSON.stringify(data));
     return data;
   } catch (e) {
     throw e;
   }
 };
 
-const logout = setUser => () => {
+const logout = () => {
   window.localStorage.removeItem('bloglistUser');
-  setUser(null);
 };
 
 export default { login, logout };

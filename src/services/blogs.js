@@ -24,6 +24,7 @@ const create = async (blog) => {
     });
     const data = await response.json();
     if (data.error) throw data.error;
+    return data;
   } catch (e) {
     console.log('BlogCreateError:', e);
   }

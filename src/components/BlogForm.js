@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createBlog } from '../reducers/blogs';
+
 import InputGroup from './InputGroup';
 
-const BlogForm = ({ renderBlogs, setMessage }) => {
-  const emptyBlog = {
+const BlogForm = (props) => {
+  const nullBlog = {
     title: '',
     author: '',
     url: '',
   };
-  const [blog, setBlog] = useState(emptyBlog);
+  const [blog, setBlog] = useState(nullBlog);
 
   const handleChange = ({ target: { name, value } }) => {
     setBlog({
@@ -19,19 +22,14 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    blogService.create(blog);
-    setMessage({
-      success: true,
-      text: `'${blog.title}' added`,
-    });
-    setTimeout(() => setMessage(null), 5000);
-    setBlog(emptyBlog);
-    renderBlogs(true);
+    props.createBlog(blog);
+    setBlog(nullBlog);
+    props.history.push('/');
   };
 
   return (
     <div>
-      <h4 className="display-4 text-center">Add new Blog</h4>
+      <h4 className="display-4">Add new Blog</h4>
       <form onSubmit={handleSubmit}>
         <InputGroup
           label="Title"
@@ -55,10 +53,7 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
           onChange={handleChange}
           required
         />
-        <button
-          className="btn btn-outline-success mr-2"
-          type="submit"
-        >
+        <button className="btn btn-outline-success mr-2" type="submit">
           Create
         </button>
       </form>
@@ -66,4 +61,9 @@ const BlogForm = ({ renderBlogs, setMessage }) => {
   );
 };
 
-export default BlogForm;
+export default withRouter(
+  connect(
+    null,
+    { createBlog },
+  )(BlogForm),
+);
