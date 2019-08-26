@@ -22,7 +22,6 @@ const login = async (credentials) => {
 };
 
 const logout = () => {
-  console.log('deleting local storage');
   window.localStorage.removeItem('bloglistUser');
 };
 

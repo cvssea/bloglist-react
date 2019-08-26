@@ -1,47 +1,62 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Spinner from '../Spinner';
 
 const Blog = ({
-  id, title, author, url, likes, user: { username }, updateLikes, deleteBlog,
+  blog, updateLikes, deleteBlog, initBlogs, history,
 }) => {
+  useEffect(() => {
+    initBlogs();
+  }, [initBlogs]);
+
+  if (!blog) return <Spinner />;
+
   let canDelete = false;
   if (window.localStorage.bloglistUser) {
     const loggedUser = JSON.parse(localStorage.bloglistUser).username;
-    canDelete = loggedUser === username;
+    canDelete = loggedUser === blog.user.username;
   }
 
   const onDelete = () => {
-    const isConfirmed = window.confirm(`Remove ${title}?`);
+    const isConfirmed = window.confirm(`Remove ${blog.title}?`);
     if (isConfirmed) {
-      deleteBlog(id);
+      deleteBlog(blog.id);
+      // temporary solution for rendering <Blogs /> without the deleted <Blog />
+      setTimeout(() => history.push('/'), 500);
     }
   };
 
   return (
-    <article className="container blog">
-      <div className="row border rounded my-4 p-2">
-        <div className="col-md-9">
-          <h4>{title}</h4>
-          <p>{url}</p>
-          <p>user: {username}</p>
-        </div>
-        <div className="col-md-3 border-left d-flex flex-column align-items-center info-visible">
-          <p className="text-center mb-0">{likes} likes</p>
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-success"
-            onClick={() => updateLikes(likes, id)}
-          >
-            Like
-          </button>
-          <p className="text-center pt-2">by: {author}</p>
-        </div>
+    <article>
+      <div className="jumbotron mt-3">
+        <h2 className="display-4">{blog.title}</h2>
+        <p className="lead">
+          <strong>{blog.author}</strong>
+        </p>
+        <hr className="my-4" />
 
-        {canDelete && (
-          <button type="button" className="btn btn-sm btn-outline-danger" onClick={onDelete}>
-            Delete
+        <p>
+          Added by <strong>{blog.user.name}</strong>
+        </p>
+        <p className="lead">
+          <span>Read </span>
+          <a href={blog.url} target="_blank" rel="noopener noreferrer">
+            {blog.url}
+          </a>
+        </p>
+        <p>
+          <button
+            className="btn btn-primary btn-lg"
+            onClick={() => updateLikes(blog.likes, blog.id)}
+          >
+            Like <span className="badge badge-light">{blog.likes}</span>
           </button>
-        )}
+        </p>
       </div>
+      {canDelete && (
+        <button className="btn btn-sm btn-danger" onClick={() => onDelete(blog.id)}>
+          Delete
+        </button>
+      )}
     </article>
   );
 };

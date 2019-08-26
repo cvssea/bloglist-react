@@ -5,7 +5,6 @@ const authReducer = (state = null, action) => {
     case 'LOGIN':
       return action.payload;
     case 'LOGOUT':
-      console.log('setting null user in reducer');
       return null;
     case 'VALIDATE':
       return action.payload;
@@ -16,7 +15,6 @@ const authReducer = (state = null, action) => {
 
 export const login = credentials => async (dispatch) => {
   const userData = await auth.login(credentials);
-  console.log('created login action');
   dispatch({
     type: 'LOGIN',
     payload: userData,
@@ -24,16 +22,12 @@ export const login = credentials => async (dispatch) => {
 };
 
 export const logout = () => {
-  console.log('logging out');
   auth.logout();
   return { type: 'LOGOUT' };
 };
 
 export const validate = userInLocalStorage => (dispatch) => {
-  console.log('validating');
   if (userInLocalStorage) {
-    console.log('found user in storage');
-
     const user = JSON.parse(userInLocalStorage);
     dispatch({
       type: 'VALIDATE',
@@ -41,7 +35,6 @@ export const validate = userInLocalStorage => (dispatch) => {
     });
     return user.token;
   }
-  console.log('no user in storage');
   return null;
 };
 

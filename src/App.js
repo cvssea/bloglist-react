@@ -8,17 +8,18 @@ import Header from './components/Header';
 import Notification from './components/Notification';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
+import Blog from './components/Blog';
 import Blogs from './components/Blogs';
 import Users from './components/Users';
 import User from './components/User';
 
 const App = ({
-  user, validateUser, fetchUsers, message,
+  user, validateUser, message,
 }) => {
   useEffect(() => {
     const token = validateUser(window.localStorage.getItem('bloglistUser'));
     if (token) blogService.setToken(token);
-  }, [fetchUsers, validateUser]);
+  }, [validateUser]);
 
   return (
     <Router>
@@ -28,6 +29,7 @@ const App = ({
         {user ? (
           <>
             <Route exact path="/" component={Blogs} />
+            <Route path="/blogs/:id" component={Blog} />
             <Route path="/add" component={BlogForm} />
             <Route exact path="/users" component={Users} />
             <Route path="/users/:id" component={User} />
