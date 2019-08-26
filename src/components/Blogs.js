@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import Blog from './Blog/Blog';
+import Blog from './Blog';
 // import blogService from '../services/blogs';
 
 import { initBlogs } from '../reducers/blogs';
@@ -13,7 +13,7 @@ const Blogs = ({ blogs, getBlogs }) => {
 
   return (
     <div className="container">
-      <h2 className="display-2">Blogs</h2>
+      <h2 className="display-4">Blogs</h2>
       {blogs
         .sort((a, b) => b.likes - a.likes)
         .map(b => (

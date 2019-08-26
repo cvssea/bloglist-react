@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { validate, logout } from './reducers/auth';
+import { validate } from './reducers/auth';
 import blogService from './services/blogs';
 
 import Header from './components/Header';
@@ -8,56 +9,41 @@ import Notification from './components/Notification';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Blogs from './components/Blogs';
+import Users from './components/Users';
+import User from './components/User';
 
-const App = ({ user, logout, validate }) => {
-  const [message, setMessage] = useState(null);
-
+const App = ({
+  user, validateUser, fetchUsers, message,
+}) => {
   useEffect(() => {
-    const token = validate(window.localStorage.getItem('bloglistUser'));
+    const token = validateUser(window.localStorage.getItem('bloglistUser'));
     if (token) blogService.setToken(token);
-  }, [validate]);
+  }, [fetchUsers, validateUser]);
 
   return (
-    <>
-      <Header user={user ? user.name : null} onClick={logout} />
+    <Router>
+      <Header user={user ? user.name : null} />
       {message && <Notification message={message} />}
       <main className="container">
         {user ? (
           <>
-            <BlogForm />
-            <Blogs setMessage={setMessage} />
+            <Route exact path="/" component={Blogs} />
+            <Route path="/add" component={BlogForm} />
+            <Route exact path="/users" component={Users} />
+            <Route path="/users/:id" component={User} />
           </>
         ) : (
           <LoginForm />
         )}
       </main>
-    </>
+    </Router>
   );
 };
 
 export default connect(
   state => ({
     user: state.auth,
+    message: state.message,
   }),
-  { logout, validate },
+  { validateUser: validate },
 )(App);
-
-// const handleLogin = async (event) => {
-//   event.preventDefault();
-//   try {
-//     loginUser(credentials);
-
-//     // const userData = await auth.login(credentials);
-//     window.localStorage.setItem('bloglistUser', JSON.stringify(currentUser));
-//     blogService.setToken(currentUser.token);
-//     setUser(currentUser);
-//   } catch (e) {
-//     console.log('LoginError:', e);
-//     setMessage({
-//       success: false,
-//       text: e,
-//     });
-//     setTimeout(() => setMessage(null), 5000);
-//   }
-//   setCredentials(emptyCredentials);
-// };

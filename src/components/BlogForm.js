@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createBlog } from '../reducers/blogs';
-// import blogService from '../services/blogs';
 
 import InputGroup from './InputGroup';
 
@@ -24,11 +24,12 @@ const BlogForm = (props) => {
     e.preventDefault();
     props.createBlog(blog);
     setBlog(nullBlog);
+    props.history.push('/');
   };
 
   return (
     <div>
-      <h4 className="display-4 text-center">Add new Blog</h4>
+      <h4 className="display-4">Add new Blog</h4>
       <form onSubmit={handleSubmit}>
         <InputGroup
           label="Title"
@@ -60,14 +61,9 @@ const BlogForm = (props) => {
   );
 };
 
-export default connect(
-  null,
-  { createBlog },
-)(BlogForm);
-
-// blogService.create(blog);
-// setMessage({
-//   success: true,
-//   text: `'${blog.title}' added`,
-// });
-// setTimeout(() => setMessage(null), 5000);
+export default withRouter(
+  connect(
+    null,
+    { createBlog },
+  )(BlogForm),
+);

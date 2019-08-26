@@ -1,10 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { updateLikes } from '../../reducers/blogs';
-import blogService from '../../services/blogs';
 
 const Blog = ({
-  id, title, author, url, likes, user: { username }, like,
+  id, title, author, url, likes, user: { username }, updateLikes, deleteBlog,
 }) => {
   let canDelete = false;
   if (window.localStorage.bloglistUser) {
@@ -12,10 +9,10 @@ const Blog = ({
     canDelete = loggedUser === username;
   }
 
-  const deleteBlog = async () => {
+  const onDelete = () => {
     const isConfirmed = window.confirm(`Remove ${title}?`);
     if (isConfirmed) {
-      await blogService.remove(id);
+      deleteBlog(id);
     }
   };
 
@@ -32,7 +29,7 @@ const Blog = ({
           <button
             type="button"
             className="btn btn-sm btn-outline-success"
-            onClick={() => like(likes, id)}
+            onClick={() => updateLikes(likes, id)}
           >
             Like
           </button>
@@ -40,7 +37,7 @@ const Blog = ({
         </div>
 
         {canDelete && (
-          <button type="button" className="btn btn-sm btn-outline-danger" onClick={deleteBlog}>
+          <button type="button" className="btn btn-sm btn-outline-danger" onClick={onDelete}>
             Delete
           </button>
         )}
@@ -49,7 +46,4 @@ const Blog = ({
   );
 };
 
-export default connect(
-  null,
-  { like: updateLikes },
-)(Blog);
+export default Blog;

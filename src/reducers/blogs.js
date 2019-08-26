@@ -16,6 +16,8 @@ const blogsReducer = (state = [], action) => {
         }
         return b;
       });
+    case 'DELETE_BLOG':
+      return state.filter(b => b.id !== action.id);
     default:
       return state;
   }
@@ -37,12 +39,22 @@ export const createBlog = data => async (dispatch) => {
     type: 'ADD_BLOG',
     payload: newBlog,
   });
+  setTimeout(() => dispatch({ type: 'CLEAR_MESSAGE' }), 5000);
 };
 
 export const updateLikes = (likes, id) => async (dispatch) => {
   await blogService.like(likes + 1, id);
   dispatch({
     type: 'LIKE',
+    id,
+  });
+};
+
+export const deleteBlog = id => async (dispatch) => {
+  await blogService.remove(id);
+
+  dispatch({
+    type: 'DELETE_BLOG',
     id,
   });
 };
