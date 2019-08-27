@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import CommentForm from '../CommentForm';
 import Spinner from '../Spinner';
 
 const Blog = ({
@@ -52,9 +53,24 @@ const Blog = ({
           </button>
         </p>
       </div>
+      <div>
+        <h4>Comments</h4>
+        <CommentForm id={blog.id} />
+        {blog.comments.length ? (
+          <ul className="list-group list-group-flush mt-5">
+            {blog.comments.map(c => (
+              <li key={`${Math.random()}${c.slice(3)}`} className="list-group-item">
+                {c}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Be the first to comment!</p>
+        )}
+      </div>
       {canDelete && (
-        <button className="btn btn-sm btn-danger" onClick={() => onDelete(blog.id)}>
-          Delete
+        <button className="btn btn-sm btn-outline-danger" onClick={() => onDelete(blog.id)}>
+          Delete Blog
         </button>
       )}
     </article>

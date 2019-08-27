@@ -45,6 +45,21 @@ const like = async (likes, id) => {
   }
 };
 
+const addComment = async (id, comment) => {
+  try {
+    const response = await fetch(`${baseUrl}/${id}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ comment }),
+    });
+    if (!response.ok) throw new Error(`comment error: ${response.status}`);
+  } catch (e) {
+    console.log('comment error', e);
+  }
+};
+
 const remove = async (id) => {
   try {
     await fetch(`${baseUrl}/${id}`, {
@@ -63,5 +78,6 @@ export default {
   getAll,
   create,
   like,
+  addComment,
   remove,
 };
